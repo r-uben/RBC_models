@@ -1,0 +1,375 @@
+\documentclass{article}
+\usepackage{mymath,lecturenotes}
+
+\title{RBC Models}
+
+
+\begin{document}
+	\maketitle
+
+	\section{Baseline RBC model}
+    I am  considering the Hansen-Style RBC model. Here firms are producing a good using the production function:
+	\begin{equation}\label{eq:baseline_RBC_Yt}
+	Y_t := Y_t(A_t, K_{t-1}, L_t) = A_t  K_{t-1}^\alpha L_t^{1-\alpha},
+	\end{equation}
+	and households are endowed with a utility function characterised by
+	\begin{equation}
+		u_t :=u\left(C_t, L_t\right) = c_t - \xi \frac{L_t^{1+\frac{1}{\nu}}}{1+\frac{1}{\nu}},
+	\end{equation}
+	where $c_t:= \log C_t$. Since there are no distortions, I can solve the model in the spirit of Ramsay social planner's problem, i.e., maximising
+	\begin{equation}
+		\max_{\{C_t, L_t, K_t\}} \E_t\left[\sum_{k\geq 0}\beta^ku\left(C_{t+k}, L_{t+k}\right)\right]
+	\end{equation}
+	subject to
+	\begin{equation}
+		C_t \leq Y_t - I_t, \label{constraint:baseline_RBC}
+	\end{equation}
+	where the dynamics of $K_t$, $Y_t$ and $A_t$ are driven by
+	\begin{align}
+			K_t &= I_t + (1-\delta) K_{t-1} \label{eq:baseline_RBC_Kt}\\
+			Y_t & = 	 A_t K_{t-1}^\alpha L_t^{1-\alpha}, \label{eq:baseline_RBC_Yt_2}\\
+			\log A_t & = \rho_a \log A_{t-1} + \varepsilon_t^a, \label{eq:baseline_RBC_At}
+		\end{align}
+	where $\varepsilon_t^a\overset{\text{iid}}{\sim}\mathcal{N}\left(0,\sigma_a^2\right)$. Note that from (\ref{eq:baseline_RBC_Kt}) I can write $I_t$ in terms time-$t$ and time-$(t-1)$ capital, i.e., $I_t = K_t - (1-\delta)K_{t-1}$. Hence, I can rewrite (\ref{constraint:baseline_RBC}) as
+	\begin{equation}\label{constraint:baseline_RBC_single_one}
+		C_t \leq A_t K_{t-1}^\alpha L_t^{1-\alpha} - \left(K_t - (1-\delta) K_{t-1}\right)
+	\end{equation}
+	On the other hand, notice that
+	$$
+		\E_t\left[\sum_{k\geq 0}\beta^ku\left(C_{t+k}, L_{t+k}\right)\right] = u_t + \beta\E_t\left[u_{t+1}\right] + \E_t\left(\sum_{k\geq 2}\beta^k u_{t+k}\right)
+	$$
+	I can now define the Lagrangian:
+	\begin{equation}
+		\mathcal{L}_t := \mathcal{L}_t\left(C_t, L_t, K_t,\lambda_t\right) = u_t + \beta\E_t\left[u_{t+1}\right] + (\cdots) + \lambda_t\left( A_t K_{t-1}^\alpha L_t^{1-\alpha} - \left(K_t - (1-\delta) K_{t-1}\right) - C_t\right).
+	\end{equation}
+	Now I take the FOC:
+	\begin{align}
+		\partial_{C_t}\mathcal{L}_t &= \partial_{C_t} u_t - \lambda_t  = 0, \label{eq:baseline_RBC_FOC1}\\
+		\partial_{L_t}\mathcal{L}_t &= \partial_{L_t} u_t  + (1-\alpha) \lambda_t A_t K_{t-1}^\alpha L_t^{-\alpha} = 0, \label{eq:baseline_RBC_FOC2}\\
+		\partial_{K_t}\mathcal{L}_t &= \beta\E_t\left[\partial_{K_t} u_{t+1}\right] - \lambda_t = 0 \label{eq:baseline_RBC_FOC3}.
+	\end{align}
+	Now, subbing (\ref{eq:baseline_RBC_FOC1}) into both (\ref{eq:baseline_RBC_FOC2}) and (\ref{eq:baseline_RBC_FOC3}), I obtain
+	\begin{align}
+		\partial_{L_t} u_t &=  - (1-\alpha) \partial_{C_t} u_t A_t K_{t-1}^\alpha L_t^{-\alpha} \\
+		\partial_{C_t} u_t &= \beta\E_t\left[\partial_{K_t} u_{t+1}\right].
+	\end{align}
+	I just need now to compute the partial derivatives:
+	\begin{equation}
+		\partial_{C_t} u_t = \frac{1}{C_t}, \quad\quad \partial_{L_t}u_{t} = -\xi L_t^{\frac{1}{\nu}}, \quad\quad \partial_{K_t} u_{t+1} = \frac{1}{C_t}\left(\alpha A_{t+1} K_{t}^{\alpha-1} L_{t+1}^{(1-\alpha)} + (1-\delta)\right),
+	\end{equation}
+	where I have used that the constraint (\ref{constraint:baseline_RBC_single_one}) is binding, because $\partial_{C_t} u_t > 0$ by assumption (non-satiation). Notice on the other hand that
+	$$
+		 A_{t+1} K_{t}^{\alpha-1} L_{t+1}^{(1-\alpha)}  = \frac{Y_{t+1}}{K_{t}}, \quad\quad A_t K_{t-1}^\alpha L_t^{-\alpha} = \frac{Y_t}{L_t}.
+	$$
+	Hence, the two FOC conditions are:
+\begin{align}
+	\xi L_t^{\frac{1}{\nu}} & =(1-\alpha)\frac{Y_t}{L_t C_t}\\
+	\frac{1}{C_t} & = \beta\E_t\left[\frac{1}{C_{t+1}}\left(\alpha \frac{Y_{t+1}}{K_{t}} + (1-\delta)\right)\right]
+\end{align}
+For simplicity, I am going to define two new variables:
+\begin{align}
+		Z_{t+1} &:= \alpha \frac{Y_{t+1}}{K_t} + (1-\delta)\label{eq:baseline_RBC_Zt}\\
+		W_{t} 	&:= (1-\alpha)\frac{Y_t}{L_t}, \label{eq:baseline_RBC_Wt}
+	\end{align}
+which can be interepreted as the marginal value (note that both are defined by means of partial derivatives) of an additional unit of capital at time $t$ inherited in period $t+1$, and the marginal product of labmy (real wage), respectively. Hence, the FOC conditions are now:
+\begin{align}
+	W_t &=\xi C_tL_t^{\frac{1}{\nu}} \label{FOC:baseline_RBC_1}\\
+	1 & = \beta\E_t\left[\frac{C_t}{C_{t+1}}Z_{t+1}\right]\label{FOC:baseline_RBC_2}.
+\end{align}
+I am now in conditions of defining the equilibrium:
+\begin{defi}
+	The equilibrium of the model defined by all the equations (\ref{eq:baseline_RBC_Yt})-(\ref{eq:baseline_RBC_At}) consists of
+	\begin{enumerate}
+		\item Set of prices, $Z_t, W_t$;
+		\item Allocations, $Y_t$, $C_t$, $L_t$, $I_t$ and $K_t$,
+		\item Productivity, $A_t$
+	\end{enumerate}
+	all satisfying the FOC conditions (\ref{FOC:baseline_RBC_1}) and (\ref{FOC:baseline_RBC_2}), and where the dynamics of $Y_t$, $K_t$ and $A_t$ are described by (\ref{eq:baseline_RBC_Yt_2}), (\ref{eq:baseline_RBC_Kt}), (\ref{eq:baseline_RBC_At}), respectively.
+\end{defi}
+
+In order to solve the model using perturbation methods, I need to find the steaty state. My notation for steady states is simply dropping the subscripts. Hence, note that $\E[\log A_t] = 0$, which means that $\log A = \E\left[\log A_t\right] = 0$ and then $A=1$. On the other hand, it's also easy to see from the dynamics of $K_t$, (\ref{eq:baseline_RBC_Kt}), that
+\begin{equation}\label{eq:baseline_RBC_ss_I_to_K}
+	I = \delta K
+\end{equation}.
+Also, from (\ref{constraint:baseline_RBC}),
+\begin{equation}\label{eq:baseline_RBC_ss_C_Y_I}
+	Y = C + I;
+\end{equation}
+and from the dyanmics of $Y_t$, (\ref{eq:baseline_RBC_Yt}),
+\begin{equation}\label{eq:baseline_RBC_ss_Y_K_L}.
+	Y = K^\alpha L^{1-\alpha}.
+\end{equation}
+Putting these three equations together, I get $C + \delta K= K^\alpha L^{1-\alpha}$, which gives us the consumption-to-labmy ratio
+\begin{equation}
+	\frac{C}{L} = \left(\frac{K}{L}\right)^\alpha - \delta \frac{K}{L}.
+\end{equation}
+Now take (\ref{eq:baseline_RBC_Zt}). Hence,
+\begin{equation}
+	Z = \alpha \frac{Y}{K} + (1-\delta)= \alpha\frac{K^\alpha L^{1-\alpha}}{K} + (1-\delta) = \alpha \left(\frac{K}{L}\right)^{\alpha-1} + (1-\delta),
+\end{equation}
+and then, from (\ref{FOC:baseline_RBC_2}), $\frac{1}{\beta} = Z$ and then,
+\begin{equation}
+	\frac{1}{\beta} = \alpha \left(\frac{K}{L}\right)^{\alpha-1} + (1-\delta),
+\end{equation}
+from which is easy to identify the capital-to-labmy variable:
+\begin{equation}\label{eq:baseline_RBC_K-to-L}
+	\frac{K}{L} = \left(\frac{1}{\alpha} \left(\frac{1}{\beta}-(1-\delta)\right)\right)^{\frac{1}{\alpha-1}} = \left[\frac{\alpha}{\frac{1}{\beta}-(1-\delta)}\right]^{\frac{1}{1-\alpha}}.
+\end{equation}
+Then I can express (\ref{eq:baseline_RBC_Wt}) in terms of (\ref{eq:baseline_RBC_K-to-L}), i.e.,
+\begin{equation}
+	W = (1-\alpha)\left(\frac{K}{L}\right)^\alpha.
+\end{equation}
+For the moment, I have identified $A, Z, W, K/L$ and $C/L$. I am now interested in idenfitying $K$ and $L$ from which $I$, $Y$ can be directly computed, and finally $C$. To do so, let's start from (\ref{FOC:baseline_RBC_1}) and (\ref{eq:baseline_RBC_Wt}). Then,
+\begin{equation}
+	(1-\alpha)\left(\frac{K}{L}\right)^\alpha = \xi C L^{\frac{1}{\nu}}.
+\end{equation}
+Note that here I only have consumption, $C$, but I can fix it by multiplying and dividing by $L$, i.e.,
+\begin{equation}
+	(1-\alpha)\left(\frac{K}{L}\right)^\alpha = \xi \frac{C}{L} L^{\frac{1}{\nu}+1}.
+\end{equation}
+it's clear then that
+\begin{equation}
+	L = \left[\frac{1-\alpha}{\xi}\left(\frac{C}{L}\right)^{-1} \left(\frac{K}{L}\right)^{\alpha}\right]^{\frac{\nu}{1+\nu}}.
+\end{equation}
+From here, $K$ can be easily computed, because $K = \frac{K}{L} L$ and then $I$, $Y$ and $C$.
+	\begin{table}
+		\centering
+		\caption{Parameters of my RBC Model}\label{tab:params}
+		\begin{tabular}{ccccccc}
+			$\alpha$ &$\nu$ & $\xi$ & $\beta$ & $\delta$ & $\rho_a$ & $\sigma_a$\\\hline\hline
+			0.3 & 2 & 4.5 & 0.99 & 0.025 & 0.95 & 0.01 \\\hline
+		\end{tabular}
+	\end{table}
+	Finally, I am choosing the parameters that can be found in Table \ref{tab:params}.
+
+	\section{RBC-GK model}
+
+	I will explain the different sectors separately:
+	\subsection{Household Sector}
+	I am considering a representative household who has to solve the following problem:
+	\begin{equation}
+		\max_{\{C_t, L_t, B_{t+1}\}} \E_t\left[\sum_{k\geq 0}\beta^{t+k} u_{t+k}\right]
+	\end{equation}
+	subject to his period budget constraint, i.e.,
+	\begin{equation}
+		C_t + B_{t+1}  = W_t L_t +R_tB_t + \Pi_t.
+	\end{equation}
+	This can be rewritten as
+	\begin{equation}
+		v_h(B_t) = \max_{\{C_t, L_t, B_{t+1}\}}\left\{u_t + \beta\E_t\left[v_h(B_{t+1})\right]\right\}
+	\end{equation}
+	I can write the Lagrangian here as
+	\begin{equation}
+		\begin{aligned}
+			\mathcal{L}_t := \mathcal{L}_t\left(C_t, L_t, B_{t+1}\right) &= u_t + \beta\E_t\left[v_h(B_{t+1})\right]  + \lambda_{t}\left(W_t L_t + R_t B_t + \Pi_t - C_t - B_{t+1}\right).\\
+		\end{aligned}
+	\end{equation}
+	where $\lambda_{t+1}$ is predictable. From here, I just take the first order conditions:
+	\begin{align}
+		\partial_{C_t} \mathcal{L}_t & = \partial_{C_t} u_t - \lambda_t = 0\label{FOC:RBC-GK_1_1}\\
+		\partial_{L_t} \mathcal{L}_t & = \partial_{L_t} u_t + \lambda_t W_t  = 0\label{FOC:RBC-GK_1_2}\\
+		\partial_{B_{t+1}}\mathcal{L}_t & = \beta\E_t\left[v_h'(B_{t+1})\right]-\lambda_t = 0. \label{FOC:RBC-GK_1_3}
+	\end{align}
+	The two first equations give us that
+	\begin{equation}
+		\xi L_t^{\frac{1}{\nu}} = \frac{W_t}{C_t},
+	\end{equation}
+	where we have use my computations before, i.e., $\partial_{L_t}u_t = - \xi L_t^{\frac{1}{\nu}}$. On the other hand, from (\ref{FOC:RBC-GK_1_3}), we get
+	\begin{equation}
+		\lambda_t = \E_t\left[\lambda_{t+1}R_{t+1}\right]
+	\end{equation}
+	after making use of the Envelope Theorem:
+	\begin{equation}
+		v'\left(B_{t+1}\right) = \partial_{B_{t+1}}\mathcal{L}_{t+1} =  \lambda_{t+1}R_{t+1}.
+	\end{equation}
+	Finally, since $\lambda_{t+1} = \beta \E_t\left[\frac{1}{C_{t+1}}\right]$ (it can be seen iterating the maximisation and changing the expectation with the maximum under the assumption that $u_t$ is increasing in $C_{t}$ for all $t$),
+		\begin{equation}
+		1 = \E_t\left[\beta\frac{C_t}{C_{t+1}}R_{t+1}\right] = \E_t\left[\Lambda_{t+1} R_{t+1}\right],
+	\end{equation}
+	where
+\begin{equation}\label{eq:RBC_GK_Lambda}
+		\Lambda_{t+1}:= \beta \frac{C_t}{C_{t+1}}.
+\end{equation}
+	 If we collect them together, we'd have
+	\begin{align}
+			\xi L_t^{\frac{1}{\nu}} &= \frac{W_t}{C_t}, \label{FOC:RBC-GK_2_1} \\
+	 \E_t\left[\Lambda_{t+1} R_{t+1}\right] &= 1.\label{FOC:RBC-GK_2_2}
+	\end{align}
+	\subsection{The firm sector}
+	Now consider a firm solving the following problem:
+	\begin{equation}
+		J(K_t) : = \max_{\{K_{t+1}, L_t, \Pi_t\}} \left(\Pi_t + \beta \E_t\left[\Lambda_{t+1} J(K_{t+1})\right]\right)
+	\end{equation}
+	subject to
+	\begin{align}
+		Y_t + (1-\delta)K_t&\geq K_{t+1} + W_t L_t + \Pi_t,\label{eq:RBC-GK_bank_constraint}
+	\end{align}
+	where
+	 \begin{align}
+	 	Y_t &= A_t K_{t}^\alpha L_t^{1-\alpha}\label{eq:RBC-GK_Y}\\
+	 	\log A_{t+1} & = \rho_a \log A_{t} + \varepsilon_{t+1}^a\label{eq:RBC-GK_A}
+	 \end{align}
+	 and. We set again the Lagrangian up:
+	\begin{equation}
+		\mathcal{L}_t := \mathcal{L}_t\left(K_{t+1}, L_t, \Pi_t\right) = \Pi_t + \beta \E_t\left[\Lambda_{t+1} J(K_{t+1})\right] - \lambda_t \left(K_{t+1} + W_t L_t + \Pi_t - Y_t - (1-\delta)K_t\right).
+	\end{equation}
+	The first order conditions are:
+	\begin{align}
+		\partial_{\Pi_t} \mathcal{L}_t&= 1 - \lambda_t = 0, \label{FOC:RBC-GK_firm_1_1} \\
+		\partial_{L_t} \mathcal{L}_t & = -\lambda_t\left(W_t - \partial_{L_t} Y_t\right) = 0, \label{FOC:RBC-GK_firm_1_2} \\
+		\partial_{K_{t+1}} \mathcal{L}_t & = \beta\E_t\left[\Lambda_{t+1}J'(K_{t+1})\right]-\lambda_t  = 0. \label{FOC:RBC-GK_firm_1_3}
+	\end{align}
+	Also, note that thanks to the Envelope Theorem,
+	\begin{equation}
+		J'(K_{t+1}) = \partial_{K_{t+1}}\mathcal{L}_{t+1} = \lambda_{t+1}\left(\partial_{K_{t+1}}Y_{t+1} + (1-\delta)\right).
+	\end{equation}
+	Now, since $\lambda_{t+1}=1$ exactly by the same reason that $\lambda_t = 1$, and $\partial_{K_{t+1}} Y_{t+1} = \alpha \frac{Y_{t+1}}{K_{t+1}}$, then, the two FOC for this problem are
+	\begin{align}
+		W_t &= (1-\alpha)\frac{Y_t}{L_t}, \label{FOC:RBC-GK_firm_2_1} \\
+		1  & = \E_t\left[\Lambda_{t+1}\left(\alpha\frac{Y_{t+1}}{K_{t+1}} + (1-\delta)\right)\right]. \label{FOC:RBC-GK_firm_2_2}
+	\end{align}
+	\subsection{The banking sector}
+	Each bank is solving the following problem
+	\begin{equation}
+		V_b(N_t) = \max_{K_{t+1}} \E_t\left[\Lambda_{t+1}\left[(1-\psi)N_{t+1} + \psi V_b(N_{t+1})\right]\right]
+	\end{equation}
+	subject to
+	\begin{align}
+		V_b(N_t) &\geq \lambda k_{t+1}\label{FOC:RBC-GK_bank_1_2}
+	\end{align}
+	where $N_t$ stands for net worth. In this model, bankers use net worth and (new) savings, $B_{t+1}$, to purchase new capital, i.e., $N_t + B_{t+1} = K_{t+1}$. On the other hand, net worth evolves through retained earnings, i.e.,
+	\begin{equation}\label{eq:RBC-GK_N_Rk_K_Rh_B}
+		\begin{aligned}
+			N_{t+1} &= R^k_{t,t+1}K_{t+1} - R^h_{t} B_{t+1} \\
+			&= R^k_{t,t+1}K_{t+1} - R^h_{t+1} \left(K_{t+1}-N_t\right)\\
+			&= \left(R^k_{t,t+1}-R^h_t\right)K_{t+1} - R^h_{t} N_t,
+		\end{aligned}
+	\end{equation}
+	where $R_t^h B_{t+1}$ indicates promises to households and $R^k_{t,t+1}K_{t+1}$ indicates the return on assets. We have seen in class that by guessing that is linear, i.e., $V_t(N_t) = A_tN_t$, we can show that
+	\begin{align}
+		A_t &= \frac{R_t^h}{1-\mu_t}\E_t\left[\Lambda_{t+1}\left[(1-\psi)+ \psi A_{t+1}\right]\right],\label{eq:RBC-GK_bank_A}\\
+		\mu_t &= \max\left\{1-\frac{R_t^hN_t}{\lambda K_{t+1}}\E_t\left[\Lambda_{t+1}\left[(1-\psi)+\psi A_t\right]\right],0\right\},\label{eq:RBC-GK_bank_mu}
+	\end{align}
+	and then rewrite
+	\begin{equation}
+		V\left(N_t\right) = \max_{K_{t+1}} \E_t\left[\hat{\Lambda}_{t+1}\left[R_{t+1}^k-R_{t+1}^h\right]K_{t+1}\right]
+	\end{equation}
+	subject to
+	\begin{equation}
+		A_t N_t \geq \lambda K_{t+1}.\label{eq:RBC-GK_A_N_K}
+	\end{equation}
+	and where
+	\begin{equation}
+		\hat{\Lambda}_{t+1} = \Lambda_{t+1}\left[(1-\psi) + \psi A_t\right].
+	\end{equation}
+	The Lagrangian of this problem is
+	\begin{equation}
+		\mathcal{L}_t = \mathcal{L}_t\left(K_{t+1}\right) = \E_t\left[\hat{\Lambda}_{t+1}\left[R_{t+1}^k-R_{t+1}^h\right]K_{t+1}\right] - \lambda_t\left(\lambda K_{t+1}-A_tN_t\right),
+	\end{equation}
+	and then the first order condition is
+	\begin{equation}
+		\partial_{K_{t+1}}\mathcal{L}_t =  \E_t\left[\hat{\Lambda}_{t+1}\left[R_{t+1}^k-R_{t}^h\right]\right] - \lambda \lambda_t = 0,
+	\end{equation}
+i.e.,
+	\begin{equation}\label{eq:RBC-GK_Rk_Rh}
+		  \E_t\left[\hat{\Lambda}_{t+1}R_{t+1}^k\right] = \E_t\left[\hat{\Lambda}_{t+1}R_{t}^h\right] + \lambda \mu_t.
+	\end{equation}
+	Now, let's define the aggregate variables in the following way:
+	\begin{equation}
+		\begin{aligned}
+			K_{t+1} & = \int_{H} K_{t+1}\left(N_{h,t}\right) \text{d} h, \\
+			B_{t+1}& = \int_H B_{t+1}\left(N_{h,t}\right) \text{d} h.
+		\end{aligned}
+	\end{equation}
+	If we define the cum interest that bankers need to pay to households as
+	\begin{equation}
+		P_t = R_t B_t,
+	\end{equation}
+	and we assume that, in each period, the new bankers start with an aggregate capital of $wK_t$. Therefore, the aggregate net-worth equals
+	\begin{equation}\label{eq:RBC-GK_N}
+		N_t = \psi\left(R_{t+1}^k K_t-P_t\right) - wK_t.
+	\end{equation}
+
+	\subsection{The Stationary State}
+	The first thing we should note is that the goods market should clear, i.e.,
+	\begin{equation}
+		Y_t = C_t + I_t.
+	\end{equation}
+	On the other hand, if we combine the labour optimality conditions for the household and the firm, i.e., (\ref{FOC:RBC-GK_2_1}) and (\ref{FOC:RBC-GK_firm_2_1}), we get
+	\begin{equation}
+		L_t^{\frac{1}{\nu}+\alpha} = \frac{1-\alpha}{\xi}\frac{A_tK_t^\alpha}{C_t} \implies L_t =  \left(\frac{1-\alpha}{\xi}\frac{A_tK_t^\alpha}{C_t}\right)^{\frac{1}{\frac{1}{\nu}+\alpha}}.
+	\end{equation}
+	Same than before, the return on asset/capital equals the future benefit of having one additional unit of capital, i.e,
+	\begin{equation}
+		R_{t+1}^k = \alpha \frac{Y_{t+1}}{K_{t}} + (1-\delta).
+	\end{equation}
+	On the other hand, note that, from (\ref{eq:RBC-GK_A}), and assuming that $A_t = A$ for all $t$, I have that $A = 1$. Also, I have from (\ref{eq:RBC_GK_Lambda}), and assuming that $\Lambda_t = \Lambda$ for all $t$, that $\Lambda = \beta$. From (\ref{eq:RBC-GK_Y}), I have that the output-to-capital and the labour-to-capital are related by means of
+	\begin{equation}
+		\frac{Y}{K} = \left(\frac{L}{K}\right)^{1-\alpha}.
+	\end{equation}
+	If I idenfity either the output-to-capital or the labour-to-capital, then I will identify $W$, because, from (\ref{FOC:RBC-GK_firm_2_1}),
+	\begin{equation}
+		W = (1-\alpha)\frac{Y}{L} = (1-\alpha)\frac{K^\alpha L^{1-\alpha}}{L} = (1-\alpha) \left(\frac{K}{L}\right)^{\alpha}.
+	\end{equation}
+	Now, from (\ref{FOC:RBC-GK_firm_2_2}),
+		\begin{equation}
+			 1= \beta\left(\alpha\frac{Y}{K}+(1-\delta)\right) \implies \frac{Y}{K} = \frac{1}{\alpha}\left(\frac{1}{\beta} - (1-\delta)\right).
+		\end{equation}
+	I have managed then to identify the output-to-capital ratio and, for the reasons that I explained above, also, the labour-to-capital ratio and $W$. Now, from (\ref{eq:RBC-GK_bank_constraint}),
+	\begin{equation}
+		Y = \delta K + WL + \Pi \implies \frac{\Pi}{K} = \frac{Y}{K} - \delta - W\frac{L}{K},
+	\end{equation}
+	then $\frac{\Pi}{K}$ is also identified. Now, from (\ref{FOC:RBC-GK_2_1}) and (\ref{FOC:RBC-GK_firm_2_1}),
+	\begin{equation}
+		\xi C L^{\frac{1}{\nu}} = (1-\alpha) \frac{Y}{L},
+	\end{equation}
+	and therefore
+	\begin{equation}
+		L^{\frac{1}{\nu}+1} = \frac{1-\alpha}{\xi} \frac{Y}{C} \implies L = \left(\frac{1-\alpha}{\xi}\frac{Y}{C}\right)^{\frac{1}{1+\frac{1}{\nu}}}.
+	\end{equation}
+	We would need then to identify the output-to-consumption ratio. From (\ref{eq:RBC-GK_bank_A}), and using that $R^h = \beta$ and $\Lambda = 1/\beta$,
+	\begin{equation}\label{eq:RBC-GK_mu_A}
+		A = \frac{\beta}{1-\mu}\frac{1}{\beta}\left[(1-\psi)+\psi A\right]\implies A (1-\mu) = (1-\psi) + \psi A \implies A = \frac{1-\psi}{1-\mu-\psi},
+	\end{equation}
+	If $\mu = 0$, then $A = 1$. On the other hand, we had
+	\begin{equation}
+		\begin{aligned}
+			A & = \lambda\left(\frac{N}{K}\right)^{-1} = \frac{1}{\frac{1}{\lambda}\frac{N}{K}},
+		\end{aligned}
+	\end{equation}
+	so we would need to identify $N/K$. In that case, from (\ref{eq:RBC-GK_Rk_Rh}),
+	\begin{equation}
+		\beta R^k = \beta R^h + \lambda \mu \iff R^k = \frac{1+\lambda\mu}{\beta}.
+	\end{equation}
+	Then, from (\ref{eq:RBC-GK_N_Rk_K_Rh_B}), and dividing it by $K$ in both sides, we get
+	\begin{equation}
+		R^k - \frac{1}{\beta}\frac{B}{K} = \lambda \iff \frac{B}{K} = \beta\left(R^k-\lambda\right) = \beta\left(\frac{1}{\beta}-\lambda\right),
+	\end{equation}
+	i.e.,
+	\begin{equation}
+		\frac{B}{K} = 1 - \lambda \beta.
+	\end{equation}
+	Now, if we divide in both sides of (\ref{eq:RBC-GK_N}) ny $K$, we get
+	\begin{equation}
+	\frac{N}{K} = \psi \left(R^k - R^h\frac{B}{K}\right) - w = \frac{\psi}{\beta}(1+\lambda\mu - (1-\lambda\beta))-w.
+	\end{equation}
+Hence, we have this system of equations:
+\begin{equation}
+	\begin{cases}
+		\frac{N}{K} = \frac{\psi}{\beta}(1+\lambda\mu - (1-\lambda\beta))-w\\
+		1-\mu-\psi = \frac{1-\psi}{\lambda}\frac{N}{K}
+	\end{cases}
+\end{equation}
+	so we have identified also $N/K$ and $\mu$ (system of two equations and two unknowns), ant then also $A$. We are about to finish: notice that
+	\begin{equation}
+		\frac{C}{K} + \left(1-\frac{1}{\beta}\right) \frac{B}{K} = W\frac{L}{K} + \frac{\Pi}{K} \implies \frac{C}{K} = W\frac{L}{K} + \frac{\Pi}{K} - \left(1-\frac{1}{\beta}\right)\left(1-\lambda\beta\right),
+	\end{equation}
+	and then $\frac{C}{K}$ is also identified. From the dynamics of capital, i.e., $K_t = I_t + (1-\delta)K_{t-1}$, we get $I = \delta K$, then
+	\begin{equation}
+		L = \left(\frac{1-\alpha}{\xi}\left(1+\delta\frac{K}{C}\right)\right)^{\frac{1}{1-\frac{1}{\nu}}}.
+	\end{equation}
+	With $K$ in hands, I idenfity $K$, and then $B$, etc.
+
+
+
+\end{document}
