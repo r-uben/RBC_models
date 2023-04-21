@@ -1,0 +1,137 @@
+    I am  considering the Hansen-Style RBC model. Here firms are producing a good using the production function:
+\begin{equation}\label{eq:baseline_RBC_Yt}
+	Y_t := Y_t(Z_t, K_{t-1}, L_t) = Z_t  K_{t-1}^\alpha L_t^{1-\alpha},
+\end{equation}
+and households are endowed with a utility function characterised by
+\begin{equation}
+	u_t :=u\left(C_t, L_t\right) = c_t - \xi \frac{L_t^{1+\frac{1}{\nu}}}{1+\frac{1}{\nu}},
+\end{equation}
+where $c_t:= \log C_t$. Since there are no distortions, I can solve the model in the spirit of Ramsay social planner's problem, i.e., maximising
+\begin{equation}
+	\max_{\{C_t, L_t, K_t\}} \E_t\left[\sum_{k\geq 0}\beta^ku\left(C_{t+k}, L_{t+k}\right)\right]
+\end{equation}
+subject to
+\begin{equation}
+	C_t \leq Y_t - I_t, \label{constraint:baseline_RBC}
+\end{equation}
+where the dynamics of $K_t$, $Y_t$ and $A_t$ are driven by
+\begin{align}
+	K_t &= I_t + (1-\delta) K_{t-1} \label{eq:baseline_RBC_Kt}\\
+	Y_t & = 	 Z_t K_{t-1}^\alpha L_t^{1-\alpha}, \label{eq:baseline_RBC_Yt_2}\\
+	\log Z_t & = \rho_a \log Z_{t-1} + \varepsilon_t^z, \label{eq:baseline_RBC_At}
+\end{align}
+where $\varepsilon_t^z\overset{\text{iid}}{\sim}\mathcal{N}\left(0,\sigma_z^2\right)$. Note that from (\ref{eq:baseline_RBC_Kt}) I can write $I_t$ in terms time-$t$ and time-$(t-1)$ capital, i.e., $I_t = K_t - (1-\delta)K_{t-1}$. Hence, I can rewrite (\ref{constraint:baseline_RBC}) as
+\begin{equation}\label{constraint:baseline_RBC_single_one}
+	C_t \leq Z_t K_{t-1}^\alpha L_t^{1-\alpha} - \left(K_t - (1-\delta) K_{t-1}\right)
+\end{equation}
+On the other hand, notice that
+$$
+\E_t\left[\sum_{k\geq 0}\beta^ku\left(C_{t+k}, L_{t+k}\right)\right] = u_t + \beta\E_t\left[u_{t+1}\right] + \E_t\left(\sum_{k\geq 2}\beta^k u_{t+k}\right)
+$$
+I can now define the Lagrangian:
+\begin{equation}
+	\mathcal{L}_t := \mathcal{L}_t\left(C_t, L_t, K_t,\lambda_t\right) = u_t + \beta\E_t\left[u_{t+1}\right] + (\cdots) + \lambda_t\left( A_t K_{t-1}^\alpha L_t^{1-\alpha} - \left(K_t - (1-\delta) K_{t-1}\right) - C_t\right).
+\end{equation}
+Now I take the FOC:
+\begin{align}
+	\partial_{C_t}\mathcal{L}_t &= \partial_{C_t} u_t - \lambda_t  = 0, \label{eq:baseline_RBC_FOC1}\\
+	\partial_{L_t}\mathcal{L}_t &= \partial_{L_t} u_t  + (1-\alpha) \lambda_t Z_t K_{t-1}^\alpha L_t^{-\alpha} = 0, \label{eq:baseline_RBC_FOC2}\\
+	\partial_{K_t}\mathcal{L}_t &= \beta\E_t\left[\partial_{K_t} u_{t+1}\right] - \lambda_t = 0 \label{eq:baseline_RBC_FOC3}.
+\end{align}
+Now, subbing (\ref{eq:baseline_RBC_FOC1}) into both (\ref{eq:baseline_RBC_FOC2}) and (\ref{eq:baseline_RBC_FOC3}), I obtain
+\begin{align}
+	\partial_{L_t} u_t &=  - (1-\alpha) \partial_{C_t} u_t Z_t K_{t-1}^\alpha L_t^{-\alpha} \\
+	\partial_{C_t} u_t &= \beta\E_t\left[\partial_{K_t} u_{t+1}\right].
+\end{align}
+I just need now to compute the partial derivatives:
+\begin{equation}
+	\partial_{C_t} u_t = \frac{1}{C_t}, \quad\quad \partial_{L_t}u_{t} = -\xi L_t^{\frac{1}{\nu}}, \quad\quad \partial_{K_t} u_{t+1} = \frac{1}{C_t}\left(\alpha Z_{t+1} K_{t}^{\alpha-1} L_{t+1}^{(1-\alpha)} + (1-\delta)\right),
+\end{equation}
+where I have used that the constraint (\ref{constraint:baseline_RBC_single_one}) is binding, because $\partial_{C_t} u_t > 0$ by assumption (non-satiation). Notice on the other hand that
+$$
+Z_{t+1} K_{t}^{\alpha-1} L_{t+1}^{(1-\alpha)}  = \frac{Y_{t+1}}{K_{t}}, \quad\quad Z_t K_{t-1}^\alpha L_t^{-\alpha} = \frac{Y_t}{L_t}.
+$$
+Hence, the two FOC conditions are:
+\begin{align}
+	\xi L_t^{\frac{1}{\nu}} & =(1-\alpha)\frac{Y_t}{L_t C_t}\\
+	\frac{1}{C_t} & = \beta\E_t\left[\frac{1}{C_{t+1}}\left(\alpha \frac{Y_{t+1}}{K_{t}} + (1-\delta)\right)\right]
+\end{align}
+For simplicity, I am going to define two new variables:
+\begin{align}
+	R_{t+1} &:= \alpha \frac{Y_{t+1}}{K_t} + (1-\delta)\label{eq:baseline_RBC_Zt}\\
+	W_{t} 	&:= (1-\alpha)\frac{Y_t}{L_t}, \label{eq:baseline_RBC_Wt}
+\end{align}
+which can be interepreted as the marginal value (note that both are defined by means of partial derivatives) of an additional unit of capital at time $t$ inherited in period $t+1$, and the marginal product of labmy (real wage), respectively. Hence, the FOC conditions are now:
+\begin{align}
+	W_t &=\xi C_tL_t^{\frac{1}{\nu}} \label{FOC:baseline_RBC_1}\\
+	1 & = \beta\E_t\left[\frac{C_t}{C_{t+1}}Z_{t+1}\right]\label{FOC:baseline_RBC_2}.
+\end{align}
+I am now in conditions of defining the equilibrium:
+\begin{defi}
+	The equilibrium of the model defined by all the equations (\ref{eq:baseline_RBC_Yt})-(\ref{eq:baseline_RBC_At}) consists of
+	\begin{enumerate}
+		\item Set of prices, $R_t, W_t$;
+		\item Allocations, $Y_t$, $C_t$, $L_t$, $I_t$ and $K_t$,
+		\item Productivity, $Z_t$
+	\end{enumerate}
+	all satisfying the FOC conditions (\ref{FOC:baseline_RBC_1}) and (\ref{FOC:baseline_RBC_2}), and where the dynamics of $Y_t$, $K_t$ and $Z_t$ are described by (\ref{eq:baseline_RBC_Yt_2}), (\ref{eq:baseline_RBC_Kt}), (\ref{eq:baseline_RBC_At}), respectively.
+\end{defi}
+
+In order to solve the model using perturbation methods, I need to find the steaty state. My notation for steady states is simply dropping the subscripts. Hence, note that $\E[\log Z_t] = 0$, which means that $\log A = \E\left[\log Z_t\right] = 0$ and then $A=1$. On the other hand, it's also easy to see from the dynamics of $K_t$, (\ref{eq:baseline_RBC_Kt}), that
+\begin{equation}\label{eq:baseline_RBC_ss_I_to_K}
+	I = \delta K
+\end{equation}.
+Also, from (\ref{constraint:baseline_RBC}),
+\begin{equation}\label{eq:baseline_RBC_ss_C_Y_I}
+	Y = C + I;
+\end{equation}
+and from the dyanmics of $Y_t$, (\ref{eq:baseline_RBC_Yt}),
+\begin{equation}\label{eq:baseline_RBC_ss_Y_K_L}.
+	Y = K^\alpha L^{1-\alpha}.
+\end{equation}
+Putting these three equations together, I get $C + \delta K= K^\alpha L^{1-\alpha}$, which gives us the consumption-to-labmy ratio
+\begin{equation}
+	\frac{C}{L} = \left(\frac{K}{L}\right)^\alpha - \delta \frac{K}{L}.
+\end{equation}
+Now take (\ref{eq:baseline_RBC_Zt}). Hence,
+\begin{equation}
+	R = \alpha \frac{Y}{K} + (1-\delta)= \alpha\frac{K^\alpha L^{1-\alpha}}{K} + (1-\delta) = \alpha \left(\frac{K}{L}\right)^{\alpha-1} + (1-\delta),
+\end{equation}
+and then, from (\ref{FOC:baseline_RBC_2}),
+\begin{equation}
+	R = \frac{1}{\beta},
+\end{equation}
+and then,
+\begin{equation}
+	\frac{1}{\beta} = \alpha \left(\frac{K}{L}\right)^{\alpha-1} + (1-\delta),
+\end{equation}
+from which is easy to identify the capital-to-labour variable:
+\begin{equation}\label{eq:baseline_RBC_K-to-L}
+	\frac{K}{L} = \left(\frac{1}{\alpha} \left(\frac{1}{\beta}-(1-\delta)\right)\right)^{\frac{1}{\alpha-1}} = \left[\frac{\alpha}{\frac{1}{\beta}-(1-\delta)}\right]^{\frac{1}{1-\alpha}}.
+\end{equation}
+Then I can express (\ref{eq:baseline_RBC_Wt}) in terms of (\ref{eq:baseline_RBC_K-to-L}), i.e.,
+\begin{equation}
+	W = (1-\alpha)\left(\frac{K}{L}\right)^\alpha.
+\end{equation}
+For the moment, I have identified $Z, R, W, K/L$ and $C/L$. I am now interested in idenfitying $K$ and $L$ from which $I$, $Y$ can be directly computed, and finally $C$. To do so, let's start from (\ref{FOC:baseline_RBC_1}) and (\ref{eq:baseline_RBC_Wt}). Then,
+\begin{equation}
+	(1-\alpha)\left(\frac{K}{L}\right)^\alpha = \xi C L^{\frac{1}{\nu}}.
+\end{equation}
+Note that here I only have consumption, $C$, but I can fix it by multiplying and dividing by $L$, i.e.,
+\begin{equation}
+	(1-\alpha)\left(\frac{K}{L}\right)^\alpha = \xi \frac{C}{L} L^{\frac{1}{\nu}+1}.
+\end{equation}
+it's clear then that
+\begin{equation}
+	L = \left[\frac{1-\alpha}{\xi}\left(\frac{C}{L}\right)^{-1} \left(\frac{K}{L}\right)^{\alpha}\right]^{\frac{\nu}{1+\nu}}.
+\end{equation}
+From here, $K$ can be easily computed, because $K = \frac{K}{L} L$ and then $I$, $Y$ and $C$.
+\begin{table}
+	\centering
+	\caption{Parameters of my RBC Model}\label{tab:params}
+	\begin{tabular}{ccccccc}
+		$\alpha$ &$\nu$ & $\xi$ & $\beta$ & $\delta$ & $\rho_a$ & $\sigma_a$\\\hline\hline
+		0.3 & 2 & 4.5 & 0.99 & 0.025 & 0.95 & 0.01 \\\hline
+	\end{tabular}
+\end{table}
+Finally, I am choosing the parameters that can be found in Table \ref{tab:params}.
